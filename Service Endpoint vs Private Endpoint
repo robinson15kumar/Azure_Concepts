@@ -1,0 +1,30 @@
+
+Both are used for outbound connectivity from VNET to other Resources over Azure Backbone network without going through Internet.
+
+Service Endpoint is used for Private connectivity between an Azure Resource and a Subnet. Without need of creating a Private IP Address.
+Service Endpoint can be enabled on Resource Type and not on Resource.
+
+In effect, you are extending the identity of the VNet to the service resource. You can then lock down the service resource, 
+so it only accepts traffic from the subnet associated with the service endpoint.
+
+For example, say you have a virtual machine (VM) in a VNet that needs to communicate with an Azure storage account. You can combine a service endpoint, 
+storage account, and NSG so that traffic from a VM in a private subnet reaches the storage account without hitting the internet, 
+the storage account blocks all traffic unless it’s from that subnet, and the NSG restricts outbound traffic from the subnet to the internet.
+
+
+In Private Endpoint, we will create a Private IP address that sits in same VNET of VM, and it acts as a proxy and connects to a Resource.
+
+Azure Private Link is a service that allows virtual network resources to privately connect to other resources as if they were part of the same virtual network, 
+carrying traffic across the Microsoft Azure backbone instead of the internet.
+Here we can pin a private endpoint to a specific resource, and sub resource as blob, container etc.,
+
+You can assign the storage account a private IP address from a VNet, and a virtual machine (VM) in that VNet can access the storage account 
+without going over the internet. This is powerful because it means you don’t need to use public IP addresses, either at the traffic source or destination. 
+It’s as if you’re bringing the storage account inside the VNet.
+
+Differences:
+- With service endpoints, you’re still connecting to the target resource’s public endpoint. This effectively extends the identity of the VNet to the target resource.
+- With private endpoints, you’re assigning the target resource a private IP address from the VNet, essentially bringing it into the network. 
+- Service endpoints are free. Private endpoints are charged according to resource hours used and inbound/outbound data processed.
+- Service endpoints do not support on-premises traffic because they can only be secured to virtual networks. 
+  However, private endpoints support traffic from on-premises via ExpressRoute, private peering, and VPN tunnels.
